@@ -646,20 +646,25 @@ struct LoadingView: View {
                 .onAppear {
                     animate = true
 
-// Simulate OS version for testing
-let simulatedMajorVersion = 18
-let simulatedMinorVersion = 4
-let simulatedPatchVersion = 0
-let simulatedBuild = "22E5200" // iOS 18.4 beta 1 build
+// Original OS version for fallback (can switch back easily)
+let os = ProcessInfo.processInfo.operatingSystemVersion
 
-if simulatedMajorVersion < 17 || (simulatedMajorVersion == 17 && simulatedMinorVersion < 0) {
-    // Show alert for unsupported host iOS version
+// Toggle this flag to simulate iOS 18.4 beta 1 (22E5200)
+let simulate18_4b1 = true
+
+// Use simulated values if flag is on, else real device version
+let majorVersion = simulate18_4b1 ? 18 : os.majorVersion
+let minorVersion = simulate18_4b1 ? 4 : os.minorVersion
+let patchVersion = simulate18_4b1 ? 0 : os.patchVersion
+let buildVersion = simulate18_4b1 ? "22E5200" :
+    (ProcessInfo.processInfo.operatingSystemVersionString.split(separator: ")").first?.split(separator: "(").last.map { String($0) } ?? "")
+
+if majorVersion < 17 || (majorVersion == 17 && minorVersion < 0) {
     alertTitle = "Unsupported OS Version"
-    alertMessage = "StikJIT only supports 17.4 and above. Your device is running iOS/iPadOS \(simulatedMajorVersion).\(simulatedMinorVersion).\(simulatedPatchVersion)"
+    alertMessage = "StikJIT only supports 17.4 and above. Your device is running iOS/iPadOS \(majorVersion).\(minorVersion).\(patchVersion)"
     showAlert = true
-} else if simulatedMajorVersion == 18 && simulatedMinorVersion == 4 && simulatedPatchVersion == 0 {
-    // Simulate check for iOS 18.4 beta 1
-    if simulatedBuild == "22E5200" {
+} else if majorVersion == 18 && minorVersion == 4 && patchVersion == 0 {
+    if buildVersion == "22E5200" {
         alertTitle = "Unsupported OS Version"
         alertMessage = "StikJIT does not support iOS 18.4 beta 1 (22E5200)."
         showAlert = true

@@ -645,15 +645,22 @@ struct LoadingView: View {
                 .shadow(color: accentColor.opacity(0.4), radius: 10, x: 0, y: 0)
                 .onAppear {
                     animate = true
-                    
-                            let os = ProcessInfo.processInfo.operatingSystemVersion
-                            if os.majorVersion < 17 || (os.majorVersion == 17 && os.minorVersion < 4) {
-                                // Show alert for unsupported host iOS version
-                                alertTitle = "Unsupported OS Version"
-                                alertMessage = "StikJIT only supports 17.4 and above. Your device is running iOS/iPadOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)"
-                                showAlert = true
-                            }
+
+                    let os = ProcessInfo.processInfo.operatingSystemVersion
+                    if os.majorVersion < 17 || (os.majorVersion == 17 && os.minorVersion < 0) {
+                        // Show alert for unsupported host iOS version
+                        alertTitle = "Unsupported OS Version"
+                        alertMessage = "StikJIT only supports 17.4 and above. Your device is running iOS/iPadOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)"
+                        showAlert = true
+                    } else if os.majorVersion == 18 && os.minorVersion == 4 && os.patchVersion == 0 {
+                        // Check for iOS 18.4 beta 1 (22E5200)
+                        if let build = ProcessInfo.processInfo.operatingSystemVersionString.split(separator: ")").first?.split(separator: "(").last, build == "22E5200" {
+                            alertTitle = "Unsupported OS Version"
+                            alertMessage = "StikJIT does not support iOS 18.4 beta 1 (22E5200)."
+                            showAlert = true
                         }
+                    }
+                }
 
                 Text("Loading...")
                     .font(.system(size: 20, weight: .medium, design: .rounded))

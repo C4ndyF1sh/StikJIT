@@ -646,31 +646,25 @@ struct LoadingView: View {
                 .onAppear {
                     animate = true
 
-// Original OS version for fallback (can switch back easily)
-let os = ProcessInfo.processInfo.operatingSystemVersion
+    // 🔧 Simulated iOS version placeholder (for testing)
+    let simulatedOSMajor = 18
+    let simulatedOSMinor = 4
+    let simulatedOSPatch = 0
+    let simulatedBuild = "22E5200" // iOS 18.4 beta 1 build
 
-// Toggle this flag to simulate iOS 18.4 beta 1 (22E5200)
-let simulate18_4b1 = true
-
-// Use simulated values if flag is on, else real device version
-let majorVersion = simulate18_4b1 ? 18 : os.majorVersion
-let minorVersion = simulate18_4b1 ? 4 : os.minorVersion
-let patchVersion = simulate18_4b1 ? 0 : os.patchVersion
-let buildVersion = simulate18_4b1 ? "22E5200" :
-    (ProcessInfo.processInfo.operatingSystemVersionString.split(separator: ")").first?.split(separator: "(").last.map { String($0) } ?? "")
-
-if majorVersion < 17 || (majorVersion == 17 && minorVersion < 0) {
-    alertTitle = "Unsupported OS Version"
-    alertMessage = "StikJIT only supports 17.4 and above. Your device is running iOS/iPadOS \(majorVersion).\(minorVersion).\(patchVersion)"
-    showAlert = true
-} else if majorVersion == 18 && minorVersion == 4 && patchVersion == 0 {
-    if buildVersion == "22E5200" {
+    // 🔍 Simulated version check (same logic as real one)
+    if simulatedOSMajor < 17 || (simulatedOSMajor == 17 && simulatedOSMinor < 0) {
         alertTitle = "Unsupported OS Version"
-        alertMessage = "StikJIT does not support iOS 18.4 beta 1 (22E5200)."
+        alertMessage = "StikJIT only supports 17.4 and above. Your device is running iOS/iPadOS \(simulatedOSMajor).\(simulatedOSMinor).\(simulatedOSPatch)"
         showAlert = true
+    } else if simulatedOSMajor == 18 && simulatedOSMinor == 4 && simulatedOSPatch == 0 {
+        if simulatedBuild == "22E5200" {
+            alertTitle = "Unsupported OS Version"
+            alertMessage = "StikJIT does not support iOS 18.4 beta 1 (22E5200)."
+            showAlert = true
+        }
     }
 }
-
                 Text("Loading...")
                     .font(.system(size: 20, weight: .medium, design: .rounded))
                     .foregroundColor(isDarkMode ? .white.opacity(0.8) : .black.opacity(0.8))

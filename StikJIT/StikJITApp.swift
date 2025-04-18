@@ -647,18 +647,21 @@ struct LoadingView: View {
                     animate = true
 
     // Extract build number from OS version string
-    if let build = ProcessInfo.processInfo.operatingSystemVersionString
-        .split(separator: ")")
-        .first?
-        .split(separator: "(")
-        .last,
-       build == "22D72" {
-        alertTitle = "Unsupported OS Version"
-        alertMessage = "StikJIT does not support iOS build 22D72."
-        showAlert = true
+if let build = ProcessInfo.processInfo.operatingSystemVersionString
+    .split(separator: ")")
+    .first?
+    .split(separator: "(")
+    .last?
+    .replacingOccurrences(of: "Build ", with: ""),
+   build == "22D72" {
+    
+    alertTitle = "Unsupported OS Version"
+    alertMessage = "StikJIT does not support iOS build 22D72."
+    showAlert = true
+   }
     }
-}
-                Text("Loading...")
+                
+            Text("Loading...")
                     .font(.system(size: 20, weight: .medium, design: .rounded))
                     .foregroundColor(isDarkMode ? .white.opacity(0.8) : .black.opacity(0.8))
                     .padding(.top, 20)

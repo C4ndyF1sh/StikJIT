@@ -646,12 +646,15 @@ struct LoadingView: View {
                 .onAppear {
                     animate = true
 
-    // 💡 Simulate iOS 18.4 beta 1
-    let simulatedBuild = "22E5200" // iOS 18.4 beta 1
-
-    if simulatedBuild == "22E5200" {
+    // Extract build number from OS version string
+    if let build = ProcessInfo.processInfo.operatingSystemVersionString
+        .split(separator: ")")
+        .first?
+        .split(separator: "(")
+        .last,
+       build == "22D72" {
         alertTitle = "Unsupported OS Version"
-        alertMessage = "StikJIT does not support iOS 18.4 beta 1 (22E5200)."
+        alertMessage = "StikJIT does not support iOS build 22D72."
         showAlert = true
     }
 }

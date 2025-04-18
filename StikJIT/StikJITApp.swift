@@ -646,23 +646,13 @@ struct LoadingView: View {
                 .onAppear {
                     animate = true
 
-    // 🔧 Simulated iOS version placeholder (for testing)
-    let simulatedOSMajor = 18
-    let simulatedOSMinor = 4
-    let simulatedOSPatch = 0
-    let simulatedBuild = "22E5200" // iOS 18.4 beta 1 build
+    // 💡 Simulate iOS 18.4 beta 1
+    let simulatedBuild = "22E5200" // iOS 18.4 beta 1
 
-    // 🔍 Simulated version check (same logic as real one)
-    if simulatedOSMajor < 17 || (simulatedOSMajor == 17 && simulatedOSMinor < 0) {
+    if simulatedBuild == "22E5200" {
         alertTitle = "Unsupported OS Version"
-        alertMessage = "StikJIT only supports 17.4 and above. Your device is running iOS/iPadOS \(simulatedOSMajor).\(simulatedOSMinor).\(simulatedOSPatch)"
+        alertMessage = "StikJIT does not support iOS 18.4 beta 1 (22E5200)."
         showAlert = true
-    } else if simulatedOSMajor == 18 && simulatedOSMinor == 4 && simulatedOSPatch == 0 {
-        if simulatedBuild == "22E5200" {
-            alertTitle = "Unsupported OS Version"
-            alertMessage = "StikJIT does not support iOS 18.4 beta 1 (22E5200)."
-            showAlert = true
-        }
     }
 }
                 Text("Loading...")

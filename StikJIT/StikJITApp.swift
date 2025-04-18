@@ -646,21 +646,25 @@ struct LoadingView: View {
                 .onAppear {
                     animate = true
 
-                    let os = ProcessInfo.processInfo.operatingSystemVersion
-                    if os.majorVersion < 17 || (os.majorVersion == 17 && os.minorVersion < 0) {
-                        // Show alert for unsupported host iOS version
-                        alertTitle = "Unsupported OS Version"
-                        alertMessage = "StikJIT only supports 17.4 and above. Your device is running iOS/iPadOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)"
-                        showAlert = true
-                    } else if os.majorVersion == 18 && os.minorVersion == 4 && os.patchVersion == 0 {
-                        // Check for iOS 18.4 beta 1 (22E5200)
-                        if let build = ProcessInfo.processInfo.operatingSystemVersionString.split(separator: ")").first?.split(separator: "(").last, build == "22E5200" {
-                            alertTitle = "Unsupported OS Version"
-                            alertMessage = "StikJIT does not support iOS 18.4 beta 1 (22E5200)."
-                            showAlert = true
-                        }
-                    }
-                }
+// Simulate OS version for testing
+let simulatedMajorVersion = 18
+let simulatedMinorVersion = 4
+let simulatedPatchVersion = 0
+let simulatedBuild = "22E5200" // iOS 18.4 beta 1 build
+
+if simulatedMajorVersion < 17 || (simulatedMajorVersion == 17 && simulatedMinorVersion < 0) {
+    // Show alert for unsupported host iOS version
+    alertTitle = "Unsupported OS Version"
+    alertMessage = "StikJIT only supports 17.4 and above. Your device is running iOS/iPadOS \(simulatedMajorVersion).\(simulatedMinorVersion).\(simulatedPatchVersion)"
+    showAlert = true
+} else if simulatedMajorVersion == 18 && simulatedMinorVersion == 4 && simulatedPatchVersion == 0 {
+    // Simulate check for iOS 18.4 beta 1
+    if simulatedBuild == "22E5200" {
+        alertTitle = "Unsupported OS Version"
+        alertMessage = "StikJIT does not support iOS 18.4 beta 1 (22E5200)."
+        showAlert = true
+    }
+}
 
                 Text("Loading...")
                     .font(.system(size: 20, weight: .medium, design: .rounded))
